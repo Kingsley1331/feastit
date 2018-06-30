@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Bookmarks from './components/Bookmarks/';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<Bookmarks />, document.getElementById('root'));
