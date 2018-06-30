@@ -21,7 +21,7 @@ class Bookmarks extends Component {
     localStorage.removeItem('list');
   }
   renderList() {
-    const list = JSON.parse(localStorage.getItem('list'));;
+    const list = JSON.parse(localStorage.getItem('list'));
     this.setState({list});
   }
   componentDidMount(){
@@ -39,6 +39,9 @@ class Bookmarks extends Component {
           this.updateInput(value);} }/>
         <button onClick={this.addBookmark}>Add to list</button>
         <button onClick={this.clearList}>Clear list</button>
+        {this.state.list && this.state.list.map((bookmark, index) => {
+          return <li key={index}>{bookmark}</li>
+        })}
       </div>
     );
   }
