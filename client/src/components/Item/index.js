@@ -8,10 +8,13 @@ class Item extends Component {
   }
 
   render() {
-    const { bookmark, onClick} = this.props;
+    const { bookmark, onClick, editing, onDoubleClick, stopEditing } = this.props;
     return (
       <tr>
-        <td>{bookmark}</td>
+        <td>
+          {editing ? <input defaultValue={bookmark} onChange={onDoubleClick} onKeyDown={stopEditing} /> :
+            <span onDoubleClick={onDoubleClick}> {bookmark}</span>}
+        </td>
         <td>
           <button onClick={onClick}>delete</button>
         </td>

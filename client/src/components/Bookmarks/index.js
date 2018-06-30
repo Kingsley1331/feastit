@@ -7,10 +7,12 @@ class Bookmarks extends Component {
     super();
     this.state = {
       list: [],
-      input: ''
+      input: '',
+      editIndex: false
     };
     this.addBookmark = this.addBookmark.bind(this);
     this.clearList = this.clearList.bind(this);
+    this.stopEditing = this.stopEditing.bind(this);
   }
   addBookmark() {
     const { input: bookmark } = this.state;
@@ -29,19 +31,37 @@ class Bookmarks extends Component {
     const list = JSON.parse(localStorage.getItem('list'));
     this.setState({list});
   }
-  componentDidMount(){
+  componentDidMount() {
     this.renderList();
   }
-  updateInput(input){
+  updateInput(input) {
     this.setState({ input });
   }
   /** Each element can be uniquely identified by its index and deleted from the list */
-  deleteItem(index){
+  deleteItem(index) {
     const list = JSON.parse(localStorage.getItem('list'));
     list.splice(index, 1 );
     localStorage.setItem('list', JSON.stringify(list));
     this.renderList();
   }
+  editItem(editIndex, value) {
+    this.setState({ editIndex });
+    if (value) {
+      const list = JSON.parse(localStorage.getItem('list'));
+      list[editIndex] = value;
+      localStorage.setItem('list', JSON.stringify(list));
+      this.renderList();
+    }
+  }
+
+  stopEditing(event) {
+    if (event.keyCode === 13) {
+      this.addBookmark();
+      event.target.value = ' ';
+      this.setState({ editIndex: false });
+    }
+  }
+  
   render() {
     return (
       <div className="BookMarks">
@@ -56,12 +76,17 @@ class Bookmarks extends Component {
             }
           }
           }/>
-        {/* <button onClick={this.addBookmark}>Add to list</button> */}
         <button onClick={this.clearList}>Clear list</button>
         <table>
           <tbody>
             {this.state.list && this.state.list.map((bookmark, index) => {
-              return <Item key={index} bookmark={bookmark} onClick={() => this.deleteItem(index)} />;
+              return <Item key={index}
+                bookmark={bookmark} 
+                editing={this.state.editIndex === index} 
+                onClick={() => this.deleteItem(index)}
+                stopEditing={this.stopEditing}
+                onDoubleClick={(event) => { this.editItem(index, event.target.value); }}
+              />;
             })}
           </tbody>
         </table>
