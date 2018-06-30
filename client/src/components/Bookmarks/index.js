@@ -14,10 +14,12 @@ class Bookmarks extends Component {
   }
   addBookmark() {
     const { input: bookmark } = this.state;
-    let list = JSON.parse(localStorage.getItem('list')) || [];
-    list.push(bookmark);
-    localStorage.setItem('list', JSON.stringify(list));
-    this.renderList();
+    if (bookmark) {
+      let list = JSON.parse(localStorage.getItem('list')) || [];
+      list.push(bookmark);
+      localStorage.setItem('list', JSON.stringify(list));
+      this.renderList();
+    }
   }
   clearList() {
     localStorage.removeItem('list');
@@ -44,10 +46,17 @@ class Bookmarks extends Component {
     return (
       <div className="BookMarks">
         <h1>Bookmarks</h1>
-        <input placeholder='please enter list item' onChange={(event) => {
-          const value = event.target.value;
-          this.updateInput(value);} }/>
-        <button onClick={this.addBookmark}>Add to list</button>
+        <input placeholder='please enter list item' 
+          onChange={event => this.updateInput(event.target.value)}
+          onKeyDown={(event) => {            
+            if (event.keyCode === 13) {
+              this.addBookmark();
+              event.target.value = ' ';
+              this.setState({ input: '' });
+            }
+          }
+          }/>
+        {/* <button onClick={this.addBookmark}>Add to list</button> */}
         <button onClick={this.clearList}>Clear list</button>
         <table>
           <tbody>
