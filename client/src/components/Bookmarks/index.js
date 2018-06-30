@@ -33,6 +33,13 @@ class Bookmarks extends Component {
   updateInput(input){
     this.setState({ input });
   }
+  /** Each element can be uniquely identified by its index and deleted from the list */
+  deleteItem(index){
+    const list = JSON.parse(localStorage.getItem('list'));
+    list.splice(index, 1 );
+    localStorage.setItem('list', JSON.stringify(list));
+    this.renderList();
+  }
   render() {
     return (
       <div className="BookMarks">
@@ -45,7 +52,7 @@ class Bookmarks extends Component {
         <table>
           <tbody>
             {this.state.list && this.state.list.map((bookmark, index) => {
-              return <Item key={index} bookmark={bookmark} />;
+              return <Item key={index} bookmark={bookmark} onClick={() => this.deleteItem(index)} />;
             })}
           </tbody>
         </table>

@@ -8,11 +8,13 @@ class Item extends Component {
   }
 
   render() {
-    const {bookmark} = this.props;
+    const { bookmark, onClick} = this.props;
     return (
       <tr>
         <td>{bookmark}</td>
-        <td><button>delete</button></td>
+        <td>
+          <button onClick={onClick}>delete</button>
+        </td>
       </tr>
     );
   }
