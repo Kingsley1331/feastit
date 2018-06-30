@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Item from '../Item';
 import './Bookmarks.css';
 
 class Bookmarks extends Component {
@@ -9,6 +10,7 @@ class Bookmarks extends Component {
       input: ''
     };
     this.addBookmark = this.addBookmark.bind(this);
+    this.clearList = this.clearList.bind(this);
   }
   addBookmark() {
     const { input: bookmark } = this.state;
@@ -19,6 +21,7 @@ class Bookmarks extends Component {
   }
   clearList() {
     localStorage.removeItem('list');
+    this.renderList();
   }
   renderList() {
     const list = JSON.parse(localStorage.getItem('list'));
@@ -39,9 +42,13 @@ class Bookmarks extends Component {
           this.updateInput(value);} }/>
         <button onClick={this.addBookmark}>Add to list</button>
         <button onClick={this.clearList}>Clear list</button>
-        {this.state.list && this.state.list.map((bookmark, index) => {
-          return <li key={index}>{bookmark}</li>
-        })}
+        <table>
+          <tbody>
+            {this.state.list && this.state.list.map((bookmark, index) => {
+              return <Item key={index} bookmark={bookmark} />;
+            })}
+          </tbody>
+        </table>
       </div>
     );
   }
