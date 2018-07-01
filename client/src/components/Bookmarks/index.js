@@ -25,13 +25,13 @@ class Bookmarks extends Component {
       localStorage.setItem('list', JSON.stringify(list));
       this.renderList();
     } else if (bookmark && !this.isUrl(bookmark)) {
-      this.setState({ inputError: 'please enter a valid url' });
+      this.setState({ inputError: 'Please enter a valid url' });
     }
   }
   
   editItem(editIndex, value) {
     const isValid = this.isUrl(value);
-    const errorMessage = !value || isValid ? '' : 'please enter a valid url2';
+    const errorMessage = !value || isValid ? '' : 'Please enter a valid url';
     this.setState({ editIndex, editInput: { [editIndex]: value }, editError: { [editIndex]: errorMessage} });
     if (value && isValid) {
       const list = JSON.parse(localStorage.getItem('list'));
@@ -83,7 +83,7 @@ class Bookmarks extends Component {
     return (
       <div className="BookMarks">
         <h1>Bookmarks</h1>
-        <input placeholder='please enter list item' 
+        <input placeholder='Please enter list item' 
           onChange={event => this.updateInput(event.target.value)}
           onKeyDown={(event) => {            
             if (event.keyCode === 13) {
@@ -93,7 +93,7 @@ class Bookmarks extends Component {
             }
           }}/>
         <button className='clearList' onClick={this.clearList}>Clear list</button>
-        <p className='inputError'>{this.state.inputError}</p>
+        <p className='error'>{this.state.inputError}</p>
         <table>
           <tbody>
             {this.state.list && this.state.list.map((bookmark, index) => {
