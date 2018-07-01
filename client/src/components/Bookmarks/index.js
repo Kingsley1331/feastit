@@ -8,30 +8,32 @@ class Bookmarks extends Component {
     this.state = {
       list: [],
       input: '',
-      editIndex: false
+      editIndex: false,
+      inputError: '',
+      editError: ''
     };
     this.addBookmark = this.addBookmark.bind(this);
     this.clearList = this.clearList.bind(this);
-    this.stopEditing = this.stopEditing.bind(this);
+    // this.stopEditing = this.stopEditing.bind(this);
   }
-  addBookmark() {
+  addBookmark(index) {
     const { input: bookmark } = this.state;
-    // console.log('bookmark', bookmark);
-    // console.log(this.isUrl(bookmark));
-    if (bookmark) {
+    if (bookmark && this.isUrl(bookmark)) {
       let list = JSON.parse(localStorage.getItem('list')) || [];
       list.push(bookmark);
       localStorage.setItem('list', JSON.stringify(list));
       this.renderList();
+    } else if (!index && !this.isUrl(bookmark)) {
+      this.setState({ inputError: 'please enter a valid url' });
     }
   }
   clearList() {
     localStorage.removeItem('list');
     this.renderList();
   }
-  renderList() {
+  renderList(inputError) {
     const list = JSON.parse(localStorage.getItem('list'));
-    this.setState({list});
+    this.setState({ list, inputError });
   }
   componentDidMount() {
     this.renderList();
@@ -60,9 +62,9 @@ class Bookmarks extends Component {
     return regexp.test(url);
   }
 
-  stopEditing(event) {
+  stopEditing(event, index) {
     if (event.keyCode === 13) {
-      this.addBookmark();
+      this.addBookmark(index);
       event.target.value = null;
       this.setState({ editIndex: false });
     }
@@ -83,6 +85,7 @@ class Bookmarks extends Component {
           }
           }/>
         <button onClick={this.clearList}>Clear list</button>
+        <p className='inputError'>{this.state.inputError}</p>
         <table>
           <tbody>
             {this.state.list && this.state.list.map((bookmark, index) => {
@@ -90,7 +93,8 @@ class Bookmarks extends Component {
                 bookmark={bookmark} 
                 editing={this.state.editIndex === index} 
                 onClick={() => this.deleteItem(index)}
-                stopEditing={this.stopEditing}
+                // stopEditing={this.stopEditing}
+                stopEditing={(event) => this.stopEditing(event, index)}
                 onDoubleClick={(event) => { this.editItem(index, event.target.value); }}
               />;
             })}
