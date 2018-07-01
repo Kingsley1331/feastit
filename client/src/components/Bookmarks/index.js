@@ -16,7 +16,7 @@ class Bookmarks extends Component {
     this.addBookmark = this.addBookmark.bind(this);
     this.clearList = this.clearList.bind(this);
   }
-  
+
   addBookmark() {
     const { input: bookmark } = this.state;
     if (bookmark && this.isUrl(bookmark)) {
@@ -52,16 +52,20 @@ class Bookmarks extends Component {
     localStorage.removeItem('list');
     this.renderList();
   }
+  
   renderList(inputError) {
     const list = JSON.parse(localStorage.getItem('list'));
     this.setState({ list, inputError });
   }
+
   componentDidMount() {
     this.renderList();
   }
+
   updateInput(input) {
     this.setState({ input });
   }
+
   /** Each element can be uniquely identified by its index and deleted from the list */
   deleteItem(index) {
     const list = JSON.parse(localStorage.getItem('list'));
@@ -75,7 +79,6 @@ class Bookmarks extends Component {
     return regexp.test(url);
   }
 
-
   render() {
     return (
       <div className="BookMarks">
@@ -88,8 +91,7 @@ class Bookmarks extends Component {
               event.target.value = null;
               this.setState({ input: '' });
             }
-          }
-          }/>
+          }}/>
         <button onClick={this.clearList}>Clear list</button>
         <p className='inputError'>{this.state.inputError}</p>
         <table>
@@ -99,8 +101,8 @@ class Bookmarks extends Component {
                 bookmark={bookmark} 
                 editing={this.state.editIndex === index} 
                 onClick={() => this.deleteItem(index)}
-                stopEditing={(event) => this.stopEditing(event, index)}
-                onDoubleClick={(event) => { this.editItem(index, event.target.value); }}
+                stopEditing={event => this.stopEditing(event, index)}
+                editBookmark={event => this.editItem(index, event.target.value)}
                 editError={this.state.editError[index]}
               />;
             })}

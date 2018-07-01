@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import './Item.css';
 
 class Item extends Component {
@@ -8,13 +7,12 @@ class Item extends Component {
   }
 
   render() {
-    const { bookmark, onClick, editing, onDoubleClick, stopEditing, editError } = this.props;
-      console.log('editError', editError);
+    const { bookmark, onClick, editing, editBookmark, stopEditing, editError } = this.props;
     return (
       <tr>
         <td>
-          {editing ? <input defaultValue={bookmark} onChange={onDoubleClick} onKeyDown={stopEditing} /> :
-            <span onDoubleClick={onDoubleClick}> {bookmark}</span>}
+          {editing ? <input defaultValue={bookmark} onChange={editBookmark} onKeyDown={stopEditing} /> :
+            <span onDoubleClick={editBookmark}> {bookmark}</span>}
         </td>
         <td>
           <button onClick={onClick}>delete</button>
