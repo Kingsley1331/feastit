@@ -8,25 +8,46 @@ class Bookmarks extends Component {
     this.state = {
       list: [],
       input: '',
+      editInput: {},
       editIndex: false,
       inputError: '',
-      editError: ''
+      editError: {}
     };
     this.addBookmark = this.addBookmark.bind(this);
     this.clearList = this.clearList.bind(this);
-    // this.stopEditing = this.stopEditing.bind(this);
   }
-  addBookmark(index) {
+  
+  addBookmark() {
     const { input: bookmark } = this.state;
     if (bookmark && this.isUrl(bookmark)) {
       let list = JSON.parse(localStorage.getItem('list')) || [];
       list.push(bookmark);
       localStorage.setItem('list', JSON.stringify(list));
       this.renderList();
-    } else if (!index && !this.isUrl(bookmark)) {
+    } else if (bookmark && !this.isUrl(bookmark)) {
       this.setState({ inputError: 'please enter a valid url' });
     }
   }
+  
+  editItem(editIndex, value) {
+    const isValid = this.isUrl(value);
+    const errorMessage = !value || isValid ? '' : 'please enter a valid url2';
+    this.setState({ editIndex, editInput: { [editIndex]: value }, editError: { [editIndex]: errorMessage} });
+    if (value && isValid) {
+      const list = JSON.parse(localStorage.getItem('list'));
+      list[editIndex] = value;
+      localStorage.setItem('list', JSON.stringify(list));
+      this.renderList();
+    } 
+  }
+
+  stopEditing(event, index) {
+    if (event.keyCode === 13 && !this.state.editError[index]) {
+      event.target.value = null;
+      this.setState({ editIndex: false });
+    }
+  }
+  
   clearList() {
     localStorage.removeItem('list');
     this.renderList();
@@ -48,28 +69,13 @@ class Bookmarks extends Component {
     localStorage.setItem('list', JSON.stringify(list));
     this.renderList();
   }
-  editItem(editIndex, value) {
-    this.setState({ editIndex });
-    if (value) {
-      const list = JSON.parse(localStorage.getItem('list'));
-      list[editIndex] = value;
-      localStorage.setItem('list', JSON.stringify(list));
-      this.renderList();
-    }
-  }
+
   isUrl(url) {
     const regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
     return regexp.test(url);
   }
 
-  stopEditing(event, index) {
-    if (event.keyCode === 13) {
-      this.addBookmark(index);
-      event.target.value = null;
-      this.setState({ editIndex: false });
-    }
-  }
-  
+
   render() {
     return (
       <div className="BookMarks">
@@ -93,9 +99,9 @@ class Bookmarks extends Component {
                 bookmark={bookmark} 
                 editing={this.state.editIndex === index} 
                 onClick={() => this.deleteItem(index)}
-                // stopEditing={this.stopEditing}
                 stopEditing={(event) => this.stopEditing(event, index)}
                 onDoubleClick={(event) => { this.editItem(index, event.target.value); }}
+                editError={this.state.editError[index]}
               />;
             })}
           </tbody>

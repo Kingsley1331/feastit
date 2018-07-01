@@ -8,7 +8,8 @@ class Item extends Component {
   }
 
   render() {
-    const { bookmark, onClick, editing, onDoubleClick, stopEditing } = this.props;
+    const { bookmark, onClick, editing, onDoubleClick, stopEditing, editError } = this.props;
+      console.log('editError', editError);
     return (
       <tr>
         <td>
@@ -17,6 +18,9 @@ class Item extends Component {
         </td>
         <td>
           <button onClick={onClick}>delete</button>
+        </td>
+        <td>
+          <p className='editError'>{editError}</p>
         </td>
       </tr>
     );
