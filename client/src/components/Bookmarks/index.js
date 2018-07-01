@@ -19,19 +19,19 @@ class Bookmarks extends Component {
 
   addBookmark() {
     const { input: bookmark } = this.state;
-    if (bookmark && this.isUrl(bookmark)) {
+    if (bookmark && this.isUrl(bookmark)) { // checks if bookmark in not empty and a valid url
       let list = JSON.parse(localStorage.getItem('list')) || [];
       list.push(bookmark);
       localStorage.setItem('list', JSON.stringify(list));
       this.renderList();
-    } else if (bookmark && !this.isUrl(bookmark)) {
+    } else if (bookmark && !this.isUrl(bookmark)) { // if a bookmark has been entered and its not valid
       this.setState({ inputError: 'Please enter a valid url' });
     }
   }
   
   editItem(editIndex, value) {
     const isValid = this.isUrl(value);
-    const errorMessage = !value || isValid ? '' : 'Please enter a valid url';
+    const errorMessage = !value || isValid ? '' : 'Please enter a valid url';  // only display error message if the value is defined and is a valid url
     this.setState({ editIndex, editInput: { [editIndex]: value }, editError: { [editIndex]: errorMessage} });
     if (value && isValid) {
       const list = JSON.parse(localStorage.getItem('list'));
@@ -42,7 +42,7 @@ class Bookmarks extends Component {
   }
 
   stopEditing(event, index) {
-    if (event.keyCode === 13 && !this.state.editError[index]) {
+    if (event.keyCode === 13 && !this.state.editError[index]) { //if the enter key is pressed and the bookmark has no errors
       event.target.value = null;
       this.setState({ editIndex: false });
     }
@@ -53,6 +53,7 @@ class Bookmarks extends Component {
     this.renderList();
   }
   
+  // renderList: purpose of this function is to make sure that state is updated with all the latest changes to local storage
   renderList(inputError) {
     const list = JSON.parse(localStorage.getItem('list'));
     this.setState({ list, inputError });
@@ -66,7 +67,7 @@ class Bookmarks extends Component {
     this.setState({ input });
   }
 
-  /** Each element can be uniquely identified by its index and deleted from the list */
+  // Each element can be uniquely identified by its index and deleted from the list
   deleteItem(index) {
     const list = JSON.parse(localStorage.getItem('list'));
     list.splice(index, 1 );
@@ -86,7 +87,7 @@ class Bookmarks extends Component {
         <input placeholder='Please enter list item' 
           onChange={event => this.updateInput(event.target.value)}
           onKeyDown={(event) => {            
-            if (event.keyCode === 13) {
+            if (event.keyCode === 13) { // checks if 'return' is pressed on the keyboard
               this.addBookmark();
               event.target.value = null;
               this.setState({ input: '' });
