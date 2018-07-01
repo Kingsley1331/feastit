@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import './Item.css';
 
 class Item extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     const { bookmark, onClick, editing, editBookmark, stopEditing, editError } = this.props;
     return (
@@ -23,4 +20,14 @@ class Item extends Component {
     );
   }
 }
+
+Item.propTypes = {
+  bookmark: PropTypes.string,
+  onClick: PropTypes.func,
+  editing: PropTypes.bool,
+  editBookmark: PropTypes.func,
+  stopEditing: PropTypes.func,
+  editError: PropTypes.string
+};
+
 export default Item;
