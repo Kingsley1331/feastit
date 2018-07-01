@@ -2,10 +2,10 @@
 
 ## Backend
 - Built with Node.js and Express.js
-- Uses basic express server to server html file
+- Uses a basic express server to server the html file
 
 ## Frontend
-- Made with createReactApp which comes with a dev server and webpack to help speed up development
+- Made with Create React App which comes with a dev server and webpack to help speed up development
 - After development all the relevant assets were bundled using webpack to make it ready for production
 - Includes a sass library for dynamically generating css
 
