@@ -92,7 +92,7 @@ class Bookmarks extends Component {
               this.setState({ input: '' });
             }
           }}/>
-        <button onClick={this.clearList}>Clear list</button>
+        <button className='clearList' onClick={this.clearList}>Clear list</button>
         <p className='inputError'>{this.state.inputError}</p>
         <table>
           <tbody>

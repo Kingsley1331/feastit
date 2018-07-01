@@ -11,15 +11,17 @@ class Item extends Component {
     return (
       <tr>
         <td>
-          {editing ? <input defaultValue={bookmark} onChange={editBookmark} onKeyDown={stopEditing} /> :
-            <span onDoubleClick={editBookmark}> {bookmark}</span>}
+                {editing ? <div><input defaultValue={bookmark} onChange={editBookmark} onKeyDown={stopEditing} /><p className='editError'>{editError}</p></div> :
+            <span onDoubleClick={editBookmark}> {bookmark}</span>
+          }
+         
         </td>
-        <td>
-          <button onClick={onClick}>delete</button>
+        <td className='delete'>
+          <button className='button' onClick={onClick}>delete</button>
         </td>
-        <td>
+        {/* <td>
           <p className='editError'>{editError}</p>
-        </td>
+        </td> */}
       </tr>
     );
   }
