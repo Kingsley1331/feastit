@@ -84,7 +84,7 @@ class Bookmarks extends Component {
     return (
       <div className="BookMarks">
         <h1>Bookmarks</h1>
-        <input placeholder='Please enter list item' 
+        <input placeholder='Enter item and press return' 
           onChange={event => this.updateInput(event.target.value)}
           onKeyDown={(event) => {            
             if (event.keyCode === 13) { // checks if 'return' is pressed on the keyboard
@@ -95,6 +95,7 @@ class Bookmarks extends Component {
           }}/>
         <button className='clearList' onClick={this.clearList}>Clear list</button>
         <p className='error'>{this.state.inputError}</p>
+        <p className='hint'>Double click on bookmark to edit and press return to submit</p>
         <table>
           <tbody>
             {this.state.list && this.state.list.map((bookmark, index) => {
