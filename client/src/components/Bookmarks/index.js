@@ -16,6 +16,8 @@ class Bookmarks extends Component {
   }
   addBookmark() {
     const { input: bookmark } = this.state;
+    // console.log('bookmark', bookmark);
+    // console.log(this.isUrl(bookmark));
     if (bookmark) {
       let list = JSON.parse(localStorage.getItem('list')) || [];
       list.push(bookmark);
@@ -53,11 +55,15 @@ class Bookmarks extends Component {
       this.renderList();
     }
   }
+  isUrl(url) {
+    const regexp = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return regexp.test(url);
+  }
 
   stopEditing(event) {
     if (event.keyCode === 13) {
       this.addBookmark();
-      event.target.value = ' ';
+      event.target.value = null;
       this.setState({ editIndex: false });
     }
   }
@@ -71,7 +77,7 @@ class Bookmarks extends Component {
           onKeyDown={(event) => {            
             if (event.keyCode === 13) {
               this.addBookmark();
-              event.target.value = ' ';
+              event.target.value = null;
               this.setState({ input: '' });
             }
           }
